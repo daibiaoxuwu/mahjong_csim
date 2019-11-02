@@ -131,9 +131,12 @@ int expectance(const int *_hand_cnts, const int* known_remain_cnt, int discard, 
         hand_cnts[discard]--;
 
     RI i,j,k,t;
-    int n=34;
+    int n=9;
 
-    init(m=remaining_cards);
+    m=remaining_cards;
+    for (t = 0; t < 136; ++t)
+        for (k = 0; k < MX; ++k)
+            f[0][t][k] = 0;
     f[0][0][1]=1;
     for (i=1;i<=n;++i) {
         nw = i & 1;
@@ -143,40 +146,44 @@ int expectance(const int *_hand_cnts, const int* known_remain_cnt, int discard, 
         for (j = m; ~j; --j)
             for (k = 1; k <= HA.tot; ++k)
                 if (f[nw ^ 1][j][k]>0)
-                    for (t = 0; t <= known_remain_cnt[i]; ++t)
-                        f[nw][j + t][HA.node[k].ch[hand_cnts[i] + t]] += f[nw ^ 1][j][k] * C[known_remain_cnt[i]][t];
+                    for (t = 0; t <= known_remain_cnt[i-1]; ++t)
+                        f[nw][j + t][HA.node[k].ch[hand_cnts[i-1] + t]] += f[nw ^ 1][j][k] * C[known_remain_cnt[i-1]][t];
     }
-    int amp=1e7;//amplify for bigints cannot devide to doubles
+    const int amp=1e7;//amplify for bigints cannot devide to doubles
     int last_possibility=amp;
     int fail_possibility=0;
-    for (nw=n&1,i=1;i<=18;++i)
+
+    m=remaining_cards;
+    for (nw=n&1,i=1;i<=34;++i)
     {
         ans=0;
         for (calc(i,1),j=3;j<=HA.tot;++j) calc(i,j);
         int sum = int((ans*fact[i]*fact[m-i]*amp/fact[m]).longValue());//not hu at this round,from i=1:~1(tianhu) to i=18:liuju
         //a possibility including the next one
-
+//printf("%d %d\n",i,sum);
         int temp2 = int(last_possibility - sum);
 
         int temp = int(round_prob[i-1] * (last_possibility - sum));
-        fail_possibility += temp;//roundprob[i]:after getting i cards still playing?
+//        fail_possibility += temp;//roundprob[i]:after getting i cards still playing?
+        fail_possibility += sum;
 //        printf("i:%d add:%d * %.3lf = %d fail: %d\n",i,temp2,round_prob[i-1],temp,fail_possibility);
-        last_possibility = sum;
+       // last_possibility = sum;
         //roundprob[i-1] most likely this is the first player. roundprob[1] tianhu.
     }
-    return fail_possibility;
+    return fail_possibility + 1;
 }
 
 int decide(const int *_hand_cnts, const int* known_remain_cnt) {
     int best_card=0;
-    double best_expectance=0;
+    double best_expectance=1e12;
     int remaining_cards = 0;
     for(int i=0;i<34;++i) remaining_cards+=known_remain_cnt[i];
     for(int i=0;i<34;++i)
     {
         if(_hand_cnts[i]>0) {
             double result = expectance(_hand_cnts, known_remain_cnt, i, remaining_cards);
-            if (result > best_expectance)best_card = i, best_expectance = result;
+            printf("i:%d result:%lf\n",i,result);
+            if (result < best_expectance)best_card = i, best_expectance = result;
         }
     }
     printf("\n");
@@ -185,6 +192,7 @@ int decide(const int *_hand_cnts, const int* known_remain_cnt) {
 int main() {
     Mahjong mahjong;
     int deck[136];
+    init(136);
     for (int i = 0; i < 136; ++i) deck[i] = i;
     std::shuffle(deck, deck + 136, std::mt19937(std::random_device()()));
     //swap(deck[30],deck[60]);
@@ -200,6 +208,12 @@ int main() {
     memset(hand_cnt, 0, 35 * sizeof(int));
     for (int i = 0; i < 13; ++i) {
         int draw = deck[poi++] / 4;
+        draw = i;
+        if(draw==9)draw = 0;
+        if(draw==10)draw = 0;
+        if(draw==11)draw = 8;
+        if(draw==12)draw = 8;
+
         hand_cnt[draw]++;
         known_remain_cnt[draw]--;
     }
