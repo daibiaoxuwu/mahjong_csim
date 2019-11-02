@@ -131,7 +131,7 @@ int expectance(const int *_hand_cnts, const int* known_remain_cnt, int discard, 
         hand_cnts[discard]--;
 
     RI i,j,k,t;
-    int n=9;
+    int n=34;
 
     m=remaining_cards;
     for (t = 0; t < 136; ++t)
@@ -194,7 +194,9 @@ int main() {
     int deck[136];
     init(136);
     for (int i = 0; i < 136; ++i) deck[i] = i;
-    std::shuffle(deck, deck + 136, std::mt19937(std::random_device()()));
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+
+    std::shuffle(deck, deck + 136, std::default_random_engine(seed));
     //swap(deck[30],deck[60]);
     char mname_buf[4];
     mname_buf[3]=0;
@@ -208,12 +210,13 @@ int main() {
     memset(hand_cnt, 0, 35 * sizeof(int));
     for (int i = 0; i < 13; ++i) {
         int draw = deck[poi++] / 4;
+        /*
         draw = i;
         if(draw==9)draw = 0;
         if(draw==10)draw = 0;
         if(draw==11)draw = 8;
         if(draw==12)draw = 8;
-
+*/
         hand_cnt[draw]++;
         known_remain_cnt[draw]--;
     }
