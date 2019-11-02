@@ -1,0 +1,4 @@
+"D:\prog\JetBrains\CLion 2019.2\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" D:\workspace\CLionProjects\mahjong_csim
+-- Configuring done
+-- Generating done
+-- Build files have been written to: D:/workspace/CLionProjects/mahjong_csim/cmake-build-debug
