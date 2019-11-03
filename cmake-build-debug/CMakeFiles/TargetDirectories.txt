@@ -1,3 +1,0 @@
-D:/workspace/CLionProjects/mahjong_csim/cmake-build-debug/CMakeFiles/mahjong_csim.dir
-D:/workspace/CLionProjects/mahjong_csim/cmake-build-debug/CMakeFiles/edit_cache.dir
-D:/workspace/CLionProjects/mahjong_csim/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -1,3 +1,0 @@
-"D:\prog\JetBrains\CLion 2019.2\bin\cmake\win\bin\cmake.exe" -E remove -f CMakeFiles\mahjong_csim.dir/objects.a
-"D:\prog\dev c++\Dev-Cpp\MinGW64\bin\ar.exe" cr CMakeFiles\mahjong_csim.dir/objects.a @CMakeFiles\mahjong_csim.dir\objects1.rsp
-"D:\prog\dev c++\Dev-Cpp\MinGW64\bin\g++.exe" -g   -Wl,--whole-archive CMakeFiles\mahjong_csim.dir/objects.a -Wl,--no-whole-archive  -o mahjong_csim.exe -Wl,--out-implib,libmahjong_csim.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\mahjong_csim.dir\linklibs.rsp
